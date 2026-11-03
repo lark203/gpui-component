@@ -1,0 +1,22 @@
+name: Sync Fork
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # 每天 UTC 0 点自动运行
+  workflow_dispatch: # 允许手动触发
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      
+      - name: Sync with Upstream
+        uses: aormsby/fork-sync-with-upstream-action@v3.4.3
+        with:
+          target_sync_branch: main
+          upstream_sync_branch: main
+          upstream_sync_repo: longbridge/gpui-kit
+          target_repo_token: ${{ secrets.GITHUB_TOKEN }}
